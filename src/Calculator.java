@@ -56,7 +56,7 @@ public class Calculator extends Application {
 
         VBox root = new VBox(10, displayBox, grid);
         Scene scene = new Scene(root, 240, 300);
-        primaryStage.setTitle("Calculator");
+        primaryStage.setTitle("JavaFX Dual Display Calculator");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -95,17 +95,19 @@ public class Calculator extends Application {
     private void calculate() {
         try {
             double num2 = Double.parseDouble(inputField.getText());
+
+            if (operator.equals("/") && num2 == 0) {
+                expressionLabel.setText(num1 + " / " + num2);
+                inputField.setText("Cannot divide by 0");
+                startNewInput = true;
+                return;
+            }
+
             double result = switch (operator) {
                 case "+" -> num1 + num2;
                 case "-" -> num1 - num2;
                 case "*" -> num1 * num2;
-                case "/" -> {
-                    if (num2 == 0) {
-                        inputField.setText("Cannot divide by 0");
-                        yield 0;
-                    }
-                    yield num1 / num2;
-                }
+                case "/" -> num1 / num2;
                 default -> 0;
             };
 
@@ -117,6 +119,7 @@ public class Calculator extends Application {
             inputField.setText("Error");
         }
     }
+
 
     public static void main(String[] args) {
         launch(args);
